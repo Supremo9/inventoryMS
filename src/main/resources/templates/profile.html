@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile — InventoryMS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/profile.css}" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink-950': '#0a0a0f',
+                        'ink-900': '#0d0d14',
+                        'ink-800': '#16161f',
+                        'accent': '#8b5cf6',
+                        'accent-light': '#a78bfa',
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="text-gray-200 antialiased">
+
+    <div class="dash-shell">
+
+        <!-- ============ SIDEBAR ============ -->
+        <aside id="sidebar" class="dash-sidebar">
+
+            <div class="px-5 py-5 border-b border-white/5">
+                <a href="/" class="flex items-center gap-2 text-white font-semibold text-lg">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center">
+                        <i data-lucide="package-2" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span>Inventory<span class="text-accent-light">MS</span></span>
+                </a>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto pb-4">
+                <p class="side-section-title">Overview</p>
+                <a href="/dashboard" class="side-link">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                    Dashboard
+                </a>
+                <a href="/analytics" class="side-link">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Analytics
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="receipt" class="w-4 h-4"></i>
+                    Reports
+                </a>
+
+                <p class="side-section-title">Manage</p>
+                <a href="/products" class="side-link">
+                    <i data-lucide="package" class="w-4 h-4"></i>
+                    Products
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    Categories
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    Suppliers
+                    <span class="side-badge">Soon</span>
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    Orders
+                    <span class="side-badge">Soon</span>
+                </a>
+
+                <p class="side-section-title">Account</p>
+                <a href="/profile" class="side-link active">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                    Profile
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    Settings
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i>
+                    Help & Support
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-white/5 space-y-3">
+                <a href="/profile" class="user-chip block">
+                    <div class="user-avatar">
+                        <img th:if="${currentUser != null and currentUser.profileImage != null}"
+                             th:src="${currentUser.profileImage}" alt="Avatar" />
+                        <span th:unless="${currentUser != null and currentUser.profileImage != null}"
+                              th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : 'U'}">U</span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-[10px] uppercase tracking-widest text-gray-500">Signed in</p>
+                        <p class="text-sm font-medium text-white truncate"
+                           th:text="${currentUser != null ? currentUser.fullName : username}">user@example.com</p>
+                    </div>
+                </a>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 rounded-lg py-2.5 transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- ============ MAIN ============ -->
+        <div class="dash-main">
+
+            <header class="topbar">
+                <div class="flex items-center justify-between gap-4 px-5 lg:px-8 py-4">
+                    <button id="sidebar-toggle"
+                            class="lg:hidden w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition">
+                        <i data-lucide="menu" class="w-4 h-4"></i>
+                    </button>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="breadcrumb">
+                            <a href="/dashboard" class="hover:text-gray-300 transition">Dashboard</a>
+                            <span class="sep">/</span>
+                            <span class="current">Profile</span>
+                        </div>
+                        <h1 class="text-lg font-semibold text-white truncate mt-0.5">Your Profile</h1>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 p-5 lg:p-8 space-y-6 max-w-4xl mx-auto w-full">
+
+                <!-- Alerts -->
+                <div th:if="${successMsg}" class="p-alert p-alert-success">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0"></i>
+                    <span th:text="${successMsg}">Updated.</span>
+                </div>
+                <div th:if="${errorMsg}" class="p-alert p-alert-error">
+                    <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+                    <span th:text="${errorMsg}">Error.</span>
+                </div>
+
+                <!-- ============ AVATAR CARD ============ -->
+                <section class="profile-card">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+
+                        <div class="avatar-wrap">
+                            <div class="profile-avatar profile-avatar-lg" id="avatar-preview">
+                                <img th:if="${user.profileImage != null}"
+                                     th:src="${user.profileImage}" alt="Avatar" />
+                                <span th:unless="${user.profileImage != null}"
+                                      th:text="${#strings.substring(user.fullName, 0, 1).toUpperCase()}">U</span>
+                            </div>
+
+                            <label class="avatar-edit-btn" for="avatar-input" title="Upload image">
+                                <i data-lucide="camera" class="w-4 h-4"></i>
+                            </label>
+                        </div>
+
+                        <div class="flex-1 text-center sm:text-left">
+                            <h2 class="text-xl font-bold text-white"
+                                th:text="${user.fullName}">Full Name</h2>
+                            <p class="text-sm text-gray-400 mt-0.5"
+                               th:text="${user.email}">user@example.com</p>
+
+                            <div class="mt-5 flex flex-wrap justify-center sm:justify-start gap-2">
+                                <form id="avatar-form"
+                                      th:action="@{/profile/image}"
+                                      method="post"
+                                      enctype="multipart/form-data"
+                                      class="inline">
+                                    <input id="avatar-input"
+                                           type="file"
+                                           name="image"
+                                           accept="image/*"
+                                           class="hidden-file-input" />
+                                    <label for="avatar-input" class="p-btn cursor-pointer">
+                                        <i data-lucide="upload" class="w-4 h-4"></i>
+                                        Change image
+                                    </label>
+                                    <button type="submit" id="avatar-submit" class="hidden">Upload</button>
+                                </form>
+
+                                <form th:if="${user.profileImage != null}"
+                                      th:action="@{/profile/image/remove}"
+                                      method="post"
+                                      class="inline">
+                                    <button type="submit"
+                                            id="remove-avatar-btn"
+                                            class="p-btn p-btn-danger">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        Remove
+                                    </button>
+                                </form>
+                            </div>
+
+                            <p class="text-xs text-gray-500 mt-3">
+                                JPG, PNG, GIF or WEBP. Max 2 MB.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ INFO CARD ============ -->
+                <section class="profile-card">
+                    <div class="mb-5">
+                        <h3 class="profile-card-title">Personal Information</h3>
+                        <p class="profile-card-subtitle">Update your name and email address</p>
+                    </div>
+
+                    <form th:action="@{/profile/info}" method="post" class="space-y-4">
+
+                        <div>
+                            <label class="p-label">Full Name</label>
+                            <input type="text"
+                                   name="fullName"
+                                   th:value="${user.fullName}"
+                                   required
+                                   class="p-input" />
+                        </div>
+
+                        <div>
+                            <label class="p-label">Email Address</label>
+                            <input type="email"
+                                   name="email"
+                                   th:value="${user.email}"
+                                   required
+                                   class="p-input" />
+                        </div>
+
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" class="p-btn">
+                                <i data-lucide="save" class="w-4 h-4"></i>
+                                Save changes
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- ============ PASSWORD CARD ============ -->
+                <section class="profile-card">
+                    <div class="mb-5">
+                        <h3 class="profile-card-title">Change Password</h3>
+                        <p class="profile-card-subtitle">Enter your current password to set a new one</p>
+                    </div>
+
+                    <form th:action="@{/profile/password}" method="post" class="space-y-4">
+
+                        <div>
+                            <label class="p-label">Current Password</label>
+                            <input type="password"
+                                   name="currentPassword"
+                                   required
+                                   class="p-input" />
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="p-label">New Password</label>
+                                <input type="password"
+                                       name="newPassword"
+                                       minlength="6"
+                                       required
+                                       class="p-input" />
+                            </div>
+                            <div>
+                                <label class="p-label">Confirm New Password</label>
+                                <input type="password"
+                                       name="confirmPassword"
+                                       minlength="6"
+                                       required
+                                       class="p-input" />
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" class="p-btn">
+                                <i data-lucide="lock" class="w-4 h-4"></i>
+                                Update password
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <footer class="pt-2 pb-4 text-center text-xs text-gray-600">
+                    &copy; 2026 InventoryMS. All rights reserved.
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/profile.js}"></script>
+</body>
+</html>

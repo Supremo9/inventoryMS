@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory Management System</title>
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts — Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+    <!-- Tailwind config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink-950': '#0a0a0f',
+                        'ink-900': '#0d0d14',
+                        'ink-800': '#16161f',
+                        'ink-700': '#1f1f2e',
+                        'accent': '#8b5cf6',
+                        'accent-light': '#a78bfa',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-ink-950 text-gray-200 min-h-screen antialiased">
+
+    <!-- Scroll progress bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- ==================================================
+         NAVBAR
+         ================================================== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-ink-950/60">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 text-white font-semibold text-lg">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center">
+                    <i data-lucide="package-2" class="w-5 h-5 text-white"></i>
+                </div>
+                <span>Inventory<span class="text-accent-light">MS</span></span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+                <a href="#features" class="hover:text-white transition">Features</a>
+                <a href="#how" class="hover:text-white transition">How it works</a>
+                <a href="#testimonials" class="hover:text-white transition">Testimonials</a>
+                <a href="#faq" class="hover:text-white transition">FAQ</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a th:href="@{/login}"
+                   class="hidden sm:inline text-sm text-gray-300 hover:text-white px-4 py-2 rounded-lg transition">
+                    Sign In
+                </a>
+                <a th:href="@{/register}"
+                   class="text-sm font-medium text-white bg-accent hover:bg-accent-light px-4 py-2 rounded-lg transition btn-glow">
+                    <span>Get Started</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================================================
+         HERO
+         ================================================== -->
+    <section id="hero" class="bg-hero relative pt-40 pb-32 px-6 overflow-hidden">
+        <div class="absolute inset-0 grid-pattern opacity-40 pointer-events-none"></div>
+
+        <!-- Floating blobs -->
+        <div class="blob blob-1 w-72 h-72 bg-accent/30 top-20 left-10"></div>
+        <div class="blob blob-2 w-96 h-96 bg-pink-500/20 bottom-0 right-10"></div>
+        <div class="blob blob-3 w-80 h-80 bg-cyan-500/15 top-1/2 left-1/2"></div>
+
+        <div id="hero-content" class="max-w-6xl mx-auto relative transition-transform duration-300 ease-out">
+            <div class="text-center animate-fade-in">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs text-gray-300 mb-6 pulse-ring">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-accent-light"></i>
+                    v1.0 is now live
+                    <span class="w-1 h-1 rounded-full bg-gray-500"></span>
+                    Trusted by teams worldwide
+                </span>
+
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6">
+                    Manage your<br />
+                    <span class="gradient-text">inventory</span><br />
+                    <span id="typed-text" class="text-gray-400 font-bold"></span><span class="typed-cursor"></span>
+                </h1>
+
+                <p class="max-w-2xl mx-auto text-lg text-gray-400 leading-relaxed mb-10 animate-fade-in delay-100">
+                    A streamlined platform to track products, monitor stock levels, and
+                    keep operations running smoothly — all from one clean dashboard.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in delay-200">
+                    <a th:href="@{/register}"
+                       class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white font-medium px-7 py-3.5 rounded-xl transition btn-glow">
+                        <i data-lucide="rocket" class="w-4 h-4 relative z-10"></i>
+                        <span>Start Free</span>
+                    </a>
+                    <a href="#features"
+                       class="inline-flex items-center gap-2 border border-white/10 hover:border-white/30 text-gray-300 hover:text-white font-medium px-7 py-3.5 rounded-xl transition">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        See how it works
+                    </a>
+                </div>
+
+                <!-- Trust row -->
+                <div class="mt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-xs text-gray-500 animate-fade-in delay-300">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-accent-light"></i>
+                        Bank-grade security
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 text-accent-light"></i>
+                        Instant setup
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="heart" class="w-4 h-4 text-accent-light"></i>
+                        Free to start
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         MARQUEE — trusted by
+         ================================================== -->
+    <section class="py-12 border-y border-white/5 overflow-hidden">
+        <p class="text-center text-xs uppercase tracking-widest text-gray-500 mb-6">
+            Powering inventory teams at
+        </p>
+        <div class="marquee-mask max-w-5xl mx-auto">
+            <div class="marquee-track gap-16 px-8">
+                <div class="flex gap-16 shrink-0">
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Acme Co.</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Northwind</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Globex</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Initech</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Umbrella</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Stark Inc.</span>
+                </div>
+                <div class="flex gap-16 shrink-0" aria-hidden="true">
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Acme Co.</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Northwind</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Globex</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Initech</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Umbrella</span>
+                    <span class="text-2xl font-bold text-gray-600 hover:text-gray-400 transition">Stark Inc.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         STATS
+         ================================================== -->
+    <section class="py-24 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center reveal">
+                <div class="text-5xl md:text-6xl font-extrabold stat-number mb-2"
+                     data-counter="10000" data-suffix="+">0</div>
+                <p class="text-sm text-gray-400 uppercase tracking-wider">Products tracked</p>
+            </div>
+            <div class="text-center reveal delay-100">
+                <div class="text-5xl md:text-6xl font-extrabold stat-number mb-2"
+                     data-counter="500" data-suffix="+">0</div>
+                <p class="text-sm text-gray-400 uppercase tracking-wider">Active teams</p>
+            </div>
+            <div class="text-center reveal delay-200">
+                <div class="text-5xl md:text-6xl font-extrabold stat-number mb-2"
+                     data-counter="99" data-suffix=".9%">0</div>
+                <p class="text-sm text-gray-400 uppercase tracking-wider">Uptime</p>
+            </div>
+            <div class="text-center reveal delay-300">
+                <div class="text-5xl md:text-6xl font-extrabold stat-number mb-2"
+                     data-counter="24" data-suffix="/7">0</div>
+                <p class="text-sm text-gray-400 uppercase tracking-wider">Support</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         FEATURES
+         ================================================== -->
+    <section id="features" class="relative py-24 px-6 border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+
+            <div class="text-center mb-16 reveal">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-xs text-accent-light mb-4">
+                    <i data-lucide="star" class="w-3 h-3"></i>
+                    Features
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Everything you <span class="gradient-text">need</span>
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto">
+                    Powerful features designed to simplify the way you manage your stock.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-100">
+                    <div class="feature-icon-wrap w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                        <i data-lucide="package-plus" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Product Management</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Add, edit, and organize products effortlessly with an intuitive interface.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-200">
+                    <div class="feature-icon-wrap w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                        <i data-lucide="bar-chart-3" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Stock Tracking</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Real-time visibility into inventory levels, so you never run out.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-300">
+                    <div class="feature-icon-wrap w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Secure Accounts</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Your data is protected with industry-standard encryption and authentication.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-100">
+                    <div class="feature-icon-wrap w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                        <i data-lucide="zap" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Lightning Fast</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Built on modern tech so every action feels instant — no waiting around.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-200">
+                    <div class="feature-icon-wrap w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                        <i data-lucide="layout-dashboard" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Clean Dashboard</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        A focused workspace that puts what matters most front and center.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-300">
+                    <div class="feature-icon-wrap w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                        <i data-lucide="users" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Multi-User Ready</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Each user gets their own secure account and access to their inventory.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         HOW IT WORKS
+         ================================================== -->
+    <section id="how" class="py-24 px-6 border-t border-white/5 relative overflow-hidden">
+        <div class="absolute inset-0 dot-pattern opacity-30 pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto relative">
+            <div class="text-center mb-16 reveal">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-xs text-accent-light mb-4">
+                    <i data-lucide="route" class="w-3 h-3"></i>
+                    How it works
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Get started in <span class="gradient-text">3 steps</span>
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto">
+                    From sign-up to full inventory control in under two minutes.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                <!-- Connector line -->
+                <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
+
+                <div class="text-center reveal delay-100 relative">
+                    <div class="w-24 h-24 mx-auto rounded-2xl glass-card flex items-center justify-center mb-5 relative z-10">
+                        <i data-lucide="user-plus" class="w-10 h-10 text-accent-light"></i>
+                    </div>
+                    <span class="inline-block text-xs font-bold text-accent-light mb-2">STEP 01</span>
+                    <h3 class="text-xl font-semibold text-white mb-2">Create your account</h3>
+                    <p class="text-sm text-gray-400 max-w-xs mx-auto">
+                        Sign up with your email in seconds. No credit card required.
+                    </p>
+                </div>
+
+                <div class="text-center reveal delay-200 relative">
+                    <div class="w-24 h-24 mx-auto rounded-2xl glass-card flex items-center justify-center mb-5 relative z-10">
+                        <i data-lucide="plus-square" class="w-10 h-10 text-accent-light"></i>
+                    </div>
+                    <span class="inline-block text-xs font-bold text-accent-light mb-2">STEP 02</span>
+                    <h3 class="text-xl font-semibold text-white mb-2">Add your products</h3>
+                    <p class="text-sm text-gray-400 max-w-xs mx-auto">
+                        Use our simple form to add names, categories, prices, and quantities.
+                    </p>
+                </div>
+
+                <div class="text-center reveal delay-300 relative">
+                    <div class="w-24 h-24 mx-auto rounded-2xl glass-card flex items-center justify-center mb-5 relative z-10">
+                        <i data-lucide="trending-up" class="w-10 h-10 text-accent-light"></i>
+                    </div>
+                    <span class="inline-block text-xs font-bold text-accent-light mb-2">STEP 03</span>
+                    <h3 class="text-xl font-semibold text-white mb-2">Manage with ease</h3>
+                    <p class="text-sm text-gray-400 max-w-xs mx-auto">
+                        Edit, delete, and monitor stock levels in real time — all from one place.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         TESTIMONIALS
+         ================================================== -->
+    <section id="testimonials" class="py-24 px-6 border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-xs text-accent-light mb-4">
+                    <i data-lucide="quote" class="w-3 h-3"></i>
+                    Testimonials
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Loved by <span class="gradient-text">teams</span>
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto">
+                    See what people say about managing their inventory with us.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-100">
+                    <div class="flex items-center gap-1 mb-4 text-accent-light">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                        "We replaced three spreadsheets and a clunky legacy tool with InventoryMS.
+                        Our stock accuracy went from 'close enough' to perfect."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center text-white font-semibold text-sm">
+                            MC
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-white">Maria Cruz</p>
+                            <p class="text-xs text-gray-500">Operations Lead, Acme Co.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-200">
+                    <div class="flex items-center gap-1 mb-4 text-accent-light">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                        "The interface is clean and fast. Onboarding my team took minutes,
+                        and the dashboard is genuinely a joy to use."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-semibold text-sm">
+                            JT
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-white">James Tan</p>
+                            <p class="text-xs text-gray-500">Founder, Northwind</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-7 reveal delay-300">
+                    <div class="flex items-center gap-1 mb-4 text-accent-light">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                        "I love that it's free to start and doesn't feel like a stripped-down
+                        trial. It's a genuinely polished product."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-white font-semibold text-sm">
+                            SR
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-white">Sara Reyes</p>
+                            <p class="text-xs text-gray-500">Store Manager, Globex</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         FAQ
+         ================================================== -->
+    <section id="faq" class="py-24 px-6 border-t border-white/5">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-xs text-accent-light mb-4">
+                    <i data-lucide="help-circle" class="w-3 h-3"></i>
+                    FAQ
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Common <span class="gradient-text">questions</span>
+                </h2>
+            </div>
+
+            <div class="space-y-3">
+                <div class="faq-item glass-card rounded-xl reveal delay-100">
+                    <button class="faq-question w-full flex items-center justify-between text-left px-6 py-5">
+                        <span class="font-medium text-white">Is it really free to get started?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-gray-400 shrink-0"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5">
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Yes. You can create an account and manage your inventory at no cost.
+                            No credit card required — just sign up and start adding products.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item glass-card rounded-xl reveal delay-200">
+                    <button class="faq-question w-full flex items-center justify-between text-left px-6 py-5">
+                        <span class="font-medium text-white">How secure is my data?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-gray-400 shrink-0"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5">
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Passwords are hashed with BCrypt, sessions use HTTP-only cookies,
+                            and all forms are protected with CSRF tokens. Your account is yours.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item glass-card rounded-xl reveal delay-300">
+                    <button class="faq-question w-full flex items-center justify-between text-left px-6 py-5">
+                        <span class="font-medium text-white">Can multiple people use the same account?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-gray-400 shrink-0"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5">
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Currently each user has their own account. Multi-user workspaces
+                            with role-based access are on the roadmap.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item glass-card rounded-xl reveal delay-400">
+                    <button class="faq-question w-full flex items-center justify-between text-left px-6 py-5">
+                        <span class="font-medium text-white">What can I track?</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 text-gray-400 shrink-0"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5">
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Products with a name, category, price, and quantity. More fields
+                            like SKU, supplier, and expiry dates are planned for later versions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         FINAL CTA
+         ================================================== -->
+    <section class="py-24 px-6 border-t border-white/5 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-pink-500/10 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto text-center relative reveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent/10 border border-accent/20 mb-6 pulse-ring">
+                <i data-lucide="boxes" class="w-8 h-8 text-accent-light"></i>
+            </div>
+
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                Ready to take <span class="gradient-text">control</span>?
+            </h2>
+            <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">
+                Join today and get instant access to a full-featured inventory dashboard.
+                No credit card. No setup fees. Just you and your products.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a th:href="@{/register}"
+                   class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white font-medium px-8 py-4 rounded-xl transition btn-glow">
+                    <i data-lucide="arrow-right" class="w-4 h-4 relative z-10"></i>
+                    <span>Create Your Account</span>
+                </a>
+                <a th:href="@{/login}"
+                   class="inline-flex items-center gap-2 border border-white/10 hover:border-white/30 text-gray-300 hover:text-white font-medium px-8 py-4 rounded-xl transition">
+                    <i data-lucide="log-in" class="w-4 h-4"></i>
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         FOOTER
+         ================================================== -->
+    <footer id="contact" class="border-t border-white/5 bg-ink-900/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+
+                <!-- Brand + newsletter -->
+                <div class="lg:col-span-2">
+                    <a href="/" class="flex items-center gap-2 text-white font-semibold text-lg mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center">
+                            <i data-lucide="package-2" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span>Inventory<span class="text-accent-light">MS</span></span>
+                    </a>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6 max-w-sm">
+                        A modern inventory management platform built for teams who care
+                        about accuracy, speed, and a clean experience.
+                    </p>
+
+                    <form onsubmit="event.preventDefault(); this.reset();" class="max-w-sm">
+                        <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">
+                            Subscribe to updates
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <input type="email" placeholder="you@company.com" required
+                                   class="flex-1 px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-accent/60 transition" />
+                            <button type="submit"
+                                    class="px-4 py-2.5 rounded-lg bg-accent hover:bg-accent-light text-white text-sm font-medium transition">
+                                Join
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Product -->
+                <div>
+                    <h4 class="text-sm font-semibold text-white mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#features" class="hover:text-white transition">Features</a></li>
+                        <li><a href="#how" class="hover:text-white transition">How it works</a></li>
+                        <li><a href="#testimonials" class="hover:text-white transition">Testimonials</a></li>
+                        <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h4 class="text-sm font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">About us</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-sm font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition">Security</a></li>
+                        <li><a href="#" class="hover:text-white transition">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+
+                <p class="text-xs text-gray-500">
+                    &copy; 2026 InventoryMS. All rights reserved.
+                </p>
+
+                <div class="flex items-center gap-4 text-gray-500">
+                    <a href="#" class="hover:text-accent-light transition" aria-label="GitHub">
+                        <i data-lucide="github" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="hover:text-accent-light transition" aria-label="Twitter">
+                        <i data-lucide="twitter" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="hover:text-accent-light transition" aria-label="LinkedIn">
+                        <i data-lucide="linkedin" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="hover:text-accent-light transition" aria-label="Mail">
+                        <i data-lucide="mail" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <p class="text-xs text-gray-500 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    All systems operational
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to top -->
+    <button id="back-to-top" aria-label="Back to top"
+            class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-accent hover:bg-accent-light text-white flex items-center justify-center shadow-lg shadow-accent/30 transition">
+        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        // Re-init icons after all content is present
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>

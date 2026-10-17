@@ -1,0 +1,1546 @@
+/* ==========================================================
+   Inventory Management System — Global Styles
+   ========================================================== */
+
+/* ---------- Base ---------- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0a0a0f;
+    color: #e5e7eb;
+    overflow-x: hidden;
+}
+
+/* ==========================================================
+   BACKGROUNDS
+   ========================================================== */
+.bg-hero {
+    background:
+        radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.18), transparent 45%),
+        radial-gradient(circle at 85% 40%, rgba(236, 72, 153, 0.12), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(56, 189, 248, 0.08), transparent 50%),
+        linear-gradient(180deg, #0a0a0f 0%, #0d0d14 100%);
+}
+
+.grid-pattern {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.dot-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* ==========================================================
+   GLASS CARD
+   ========================================================== */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.4s ease;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(139, 92, 246, 0.45);
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px -25px rgba(139, 92, 246, 0.4);
+}
+
+/* ==========================================================
+   GRADIENT TEXT
+   ========================================================== */
+.gradient-text {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+
+/* ==========================================================
+   ENTRANCE ANIMATIONS
+   ========================================================== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in     { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.animate-fade-left   { animation: fadeInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.animate-fade-right  { animation: fadeInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.animate-scale-in    { animation: scaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+
+/* ==========================================================
+   SCROLL REVEAL (used with JS IntersectionObserver)
+   ========================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
+.btn-glow {
+    position: relative;
+    transition: all 0.35s ease;
+    overflow: hidden;
+}
+
+.btn-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    z-index: 0;
+}
+
+.btn-glow:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.btn-glow > * {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.7);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================
+   FLOATING GLOW BLOBS
+   ========================================================== */
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(30px, -20px) scale(1.05); }
+    66%      { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    animation: float 12s ease-in-out infinite;
+}
+
+.blob-1 { animation-delay: 0s; }
+.blob-2 { animation-delay: 4s; }
+.blob-3 { animation-delay: 8s; }
+
+/* ==========================================================
+   ANIMATED TYPING CURSOR
+   ========================================================== */
+.typed-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: #a78bfa;
+    margin-left: 4px;
+    animation: blink 1s steps(1) infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ==========================================================
+   MARQUEE (for trusted-by logos)
+   ========================================================== */
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+}
+
+.marquee-mask {
+    mask-image: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
+}
+
+/* ==========================================================
+   ANIMATED PULSE RING
+   ========================================================== */
+@keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+    70%  { box-shadow: 0 0 0 16px rgba(139, 92, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+}
+
+.pulse-ring {
+    animation: pulseRing 2.5s infinite;
+}
+
+/* ==========================================================
+   CUSTOM SCROLLBAR
+   ========================================================== */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+/* ==========================================================
+   SCROLL PROGRESS BAR
+   ========================================================== */
+#scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #8b5cf6, #ec4899);
+    z-index: 100;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* ==========================================================
+   STAT NUMBER
+   ========================================================== */
+.stat-number {
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, #ffffff, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==========================================================
+   FEATURE ICON ROTATION
+   ========================================================== */
+.feature-icon-wrap {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover .feature-icon-wrap {
+    transform: rotate(-8deg) scale(1.1);
+}
+
+/* ==========================================================
+   FAQ ACCORDION
+   ========================================================== */
+.faq-item {
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.4s ease;
+}
+
+.faq-item.open .faq-answer {
+    max-height: 300px;
+    padding-top: 1rem;
+}
+
+.faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+}
+
+.faq-chevron {
+    transition: transform 0.3s ease;
+}
+
+/* ==========================================================
+   BACK TO TOP
+   ========================================================== */
+#back-to-top {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+}
+
+#back-to-top.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* ==========================================================
+   NAVBAR SHRINK ON SCROLL
+   ========================================================== */
+#navbar {
+    transition: padding 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+#navbar.scrolled {
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================
+   REDUCED MOTION SUPPORT
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+/* ==========================================================
+   AUTH PAGES (Login / Register)
+   ========================================================== */
+
+/* ---------- Full screen background ---------- */
+.auth-bg {
+    background:
+        radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.18), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.12), transparent 50%),
+        linear-gradient(180deg, #0a0a0f 0%, #0d0d14 100%);
+    min-height: 100vh;
+}
+
+/* ---------- Split container ---------- */
+.auth-shell {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow:
+        0 30px 80px -20px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+    overflow: hidden;
+}
+
+/* ---------- Hero side (left panel) ---------- */
+.auth-hero {
+    background:
+        radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.35), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.25), transparent 55%),
+        linear-gradient(135deg, #17172a 0%, #0f0f1a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.auth-hero::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 70%);
+    bottom: -150px;
+    right: -150px;
+    filter: blur(60px);
+    animation: float 14s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* ---------- Auth form inputs ---------- */
+.auth-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.65rem;
+    color: #e5e7eb;
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+.auth-input::placeholder {
+    color: #6b7280;
+}
+
+.auth-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+}
+
+.auth-input-wrap {
+    position: relative;
+}
+
+.auth-input-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.1rem;
+    height: 1.1rem;
+    color: #6b7280;
+    pointer-events: none;
+    transition: color 0.25s ease;
+}
+
+.auth-input-wrap:focus-within .auth-input-icon {
+    color: #a78bfa;
+}
+
+/* ---------- Password toggle button ---------- */
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.25s ease, background 0.25s ease;
+}
+
+.password-toggle:hover {
+    color: #a78bfa;
+    background: rgba(139, 92, 246, 0.1);
+}
+
+/* ---------- Primary auth button ---------- */
+.auth-btn {
+    position: relative;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 0.65rem;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.35s ease;
+}
+
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px -12px rgba(139, 92, 246, 0.7);
+}
+
+.auth-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+}
+
+.auth-btn:hover::before {
+    left: 100%;
+}
+
+/* ---------- Error / success alerts ---------- */
+.auth-alert {
+    padding: 0.75rem 1rem;
+    border-radius: 0.6rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    animation: fadeInUp 0.4s ease;
+}
+
+.auth-alert-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+}
+
+.auth-alert-success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #86efac;
+}
+
+.auth-alert-info {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+}
+
+/* ---------- Feature list bullets in hero ---------- */
+.hero-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    animation: fadeInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+}
+
+.hero-feature-icon {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.6rem;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hero-feature:hover .hero-feature-icon {
+    transform: scale(1.1) rotate(-5deg);
+    background: rgba(139, 92, 246, 0.25);
+}
+
+/* ---------- Split divider for large screens ---------- */
+@media (min-width: 1024px) {
+    .auth-hero {
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* ---------- Floating label badge ---------- */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.75rem;
+    color: #d1d5db;
+}
+
+/* ---------- Shake animation for invalid form ---------- */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+.shake {
+    animation: shake 0.5s ease;
+}
+/* ==========================================================
+   DASHBOARD
+   ========================================================== */
+
+/* ---------- Layout shell ---------- */
+.dash-shell {
+    display: flex;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 80% 0%, rgba(139, 92, 246, 0.08), transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(236, 72, 153, 0.06), transparent 45%),
+        #0a0a0f;
+}
+
+/* ---------- Sidebar ---------- */
+.dash-sidebar {
+    width: 260px;
+    background: rgba(13, 13, 20, 0.95);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(12px);
+}
+
+@media (max-width: 1023px) {
+    .dash-sidebar {
+        transform: translateX(-100%);
+    }
+    .dash-sidebar.open {
+        transform: translateX(0);
+    }
+    .dash-main {
+        margin-left: 0 !important;
+    }
+}
+
+.dash-main {
+    margin-left: 260px;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Sidebar links ---------- */
+.side-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    color: #9ca3af;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.side-link:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #e5e7eb;
+}
+
+.side-link.active {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.18), rgba(139, 92, 246, 0.02));
+    color: white;
+    font-weight: 500;
+}
+
+.side-link.active::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(180deg, #8b5cf6, #ec4899);
+}
+
+/* ---------- Stat card ---------- */
+.stat-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.35);
+    box-shadow: 0 20px 40px -20px rgba(139, 92, 246, 0.4);
+}
+
+.stat-card:hover::after {
+    opacity: 1;
+}
+
+.stat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.35rem;
+}
+
+/* ---------- Table ---------- */
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.dash-table thead th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.dash-table tbody td {
+    padding: 0.9rem 1rem;
+    color: #d1d5db;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+}
+
+.dash-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.dash-table tbody tr:hover {
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.dash-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ---------- Badges ---------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.badge-violet {
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.badge-green {
+    background: rgba(34, 197, 94, 0.12);
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.badge-amber {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-rose {
+    background: rgba(244, 63, 94, 0.12);
+    color: #fda4af;
+    border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
+/* ---------- Action buttons ---------- */
+.action-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+}
+
+.action-btn-edit {
+    color: #a78bfa;
+}
+
+.action-btn-edit:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.action-btn-delete {
+    color: #fda4af;
+}
+
+.action-btn-delete:hover {
+    background: rgba(244, 63, 94, 0.15);
+    border-color: rgba(244, 63, 94, 0.3);
+}
+
+/* ---------- Slide-in panel for the Add form ---------- */
+.slide-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 480px;
+    background: #0d0d14;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 50;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -30px 0 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+.slide-panel.open {
+    transform: translateX(0);
+}
+
+.slide-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 49;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.slide-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ---------- Dashboard inputs ---------- */
+.dash-input {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.55rem;
+    color: #e5e7eb;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.dash-input::placeholder { color: #6b7280; }
+
+.dash-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* ---------- User chip in sidebar ---------- */
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem;
+    border-radius: 0.7rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.2s ease;
+}
+
+.user-chip:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.user-avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.55rem;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+/* ---------- Empty state ---------- */
+.empty-state {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-state-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    border-radius: 1rem;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a78bfa;
+}
+/* ==========================================================
+   DASHBOARD v2 — Analytics Layout
+   ========================================================== */
+
+.dash-shell {
+    display: flex;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 75% -10%, rgba(139, 92, 246, 0.10), transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(236, 72, 153, 0.07), transparent 45%),
+        #0a0a0f;
+}
+
+/* ---------- Sidebar ---------- */
+.dash-sidebar {
+    width: 264px;
+    background: rgba(13, 13, 20, 0.95);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(16px);
+}
+
+@media (max-width: 1023px) {
+    .dash-sidebar { transform: translateX(-100%); }
+    .dash-sidebar.open { transform: translateX(0); }
+    .dash-main { margin-left: 0 !important; }
+}
+
+.dash-main {
+    margin-left: 264px;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Sidebar sections ---------- */
+.side-section-title {
+    padding: 0 1rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #52525b;
+}
+
+.side-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    margin: 0 0.75rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    color: #9ca3af;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.side-link:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #e5e7eb;
+}
+
+.side-link.active {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.18), rgba(139, 92, 246, 0.02));
+    color: white;
+    font-weight: 500;
+}
+
+.side-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 22%;
+    bottom: 22%;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(180deg, #8b5cf6, #ec4899);
+}
+
+.side-badge {
+    margin-left: auto;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #71717a;
+}
+
+/* ---------- Stat card ---------- */
+.stat-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.15rem 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.35);
+    box-shadow: 0 20px 40px -20px rgba(139, 92, 246, 0.4);
+}
+
+.stat-card:hover::after { opacity: 1; }
+
+.stat-icon {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    margin-top: 0.85rem;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
+}
+
+.stat-delta {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* ---------- Chart card ---------- */
+.chart-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: border-color 0.3s ease;
+}
+
+.chart-card:hover {
+    border-color: rgba(139, 92, 246, 0.25);
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.chart-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+}
+
+.chart-subtitle {
+    font-size: 0.75rem;
+    color: #71717a;
+    margin-top: 0.15rem;
+}
+
+.chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.chart-canvas-wrap.tall { height: 340px; }
+
+/* ---------- Chart legend ---------- */
+.legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-top: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #d1d5db;
+}
+
+.legend-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* ---------- Activity feed ---------- */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-icon {
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+}
+
+/* ---------- User chip ---------- */
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem;
+    border-radius: 0.7rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.2s ease;
+}
+
+.user-chip:hover { border-color: rgba(139, 92, 246, 0.3); }
+
+.user-avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.55rem;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+/* ---------- Slide-in panel (Add Product) ---------- */
+.slide-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 480px;
+    background: #0d0d14;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 50;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -30px 0 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+.slide-panel.open { transform: translateX(0); }
+
+.slide-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 49;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.slide-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ---------- Inputs ---------- */
+.dash-input {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.55rem;
+    color: #e5e7eb;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.dash-input::placeholder { color: #6b7280; }
+
+.dash-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* ---------- Top bar search ---------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 10, 15, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.breadcrumb {
+    font-size: 0.7rem;
+    color: #71717a;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.breadcrumb .sep { color: #3f3f46; }
+.breadcrumb .current { color: #d4d4d8; }
+/* ==========================================================
+   MODALS + ENHANCED ANIMATIONS
+   ========================================================== */
+
+/* ---------- Improved backdrop fade ---------- */
+.slide-backdrop {
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                backdrop-filter 0.35s ease;
+}
+
+/* ---------- Slide panel with spring ---------- */
+.slide-panel {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s ease;
+}
+
+.slide-panel.open {
+    box-shadow: -40px 0 80px -30px rgba(139, 92, 246, 0.25);
+}
+
+/* ---------- Delete confirmation modal ---------- */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-shell {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.92);
+    width: calc(100% - 2rem);
+    max-width: 420px;
+    background: #0d0d14;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.1rem;
+    z-index: 61;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease,
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease;
+    overflow: hidden;
+}
+
+.modal-shell.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 40px 80px -30px rgba(244, 63, 94, 0.35),
+                0 0 0 1px rgba(244, 63, 94, 0.15);
+}
+
+.modal-shell.modal-danger::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #f43f5e, #ec4899);
+}
+
+/* ---------- Modal content ---------- */
+.modal-header {
+    padding: 1.5rem 1.5rem 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.modal-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.modal-icon-danger {
+    background: rgba(244, 63, 94, 0.12);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    color: #fda4af;
+    animation: pulseRingRose 2s ease-out infinite;
+}
+
+@keyframes pulseRingRose {
+    0%   { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+    70%  { box-shadow: 0 0 0 14px rgba(244, 63, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+.modal-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.35rem;
+}
+
+.modal-message {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    line-height: 1.55;
+}
+
+.modal-message strong {
+    color: #e5e7eb;
+    font-weight: 500;
+}
+
+.modal-body {
+    padding: 0.5rem 1.5rem 1.5rem;
+}
+
+.modal-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 0.65rem;
+    background: rgba(244, 63, 94, 0.06);
+    border: 1px solid rgba(244, 63, 94, 0.15);
+    font-size: 0.78rem;
+    color: #fca5a5;
+    line-height: 1.5;
+    margin-top: 1rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- Buttons inside modal ---------- */
+.btn-ghost {
+    padding: 0.65rem 1.15rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #9ca3af;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-danger {
+    padding: 0.65rem 1.15rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #e11d48, #f43f5e);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -12px rgba(244, 63, 94, 0.7);
+}
+
+/* ---------- Row removal animation ---------- */
+@keyframes rowOut {
+    0%   { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-30px); max-height: 0; padding: 0; }
+}
+
+.row-removing {
+    animation: rowOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: none;
+}
+
+/* ---------- Row entrance animation ---------- */
+@keyframes rowIn {
+    0%   { opacity: 0; transform: translateY(-6px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.row-entering {
+    animation: rowIn 0.4s ease forwards;
+}
+
+/* ---------- Panel header entrance ---------- */
+@keyframes panelFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.panel-animate > * {
+    animation: panelFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.panel-animate > *:nth-child(1) { animation-delay: 0.05s; }
+.panel-animate > *:nth-child(2) { animation-delay: 0.1s; }
+.panel-animate > *:nth-child(3) { animation-delay: 0.15s; }
+.panel-animate > *:nth-child(4) { animation-delay: 0.2s; }
+.panel-animate > *:nth-child(5) { animation-delay: 0.25s; }
+.panel-animate > *:nth-child(6) { animation-delay: 0.3s; }
+
+/* ---------- Focus ring on edit-pencil click ---------- */
+.action-btn-flash {
+    animation: btnFlash 0.5s ease;
+}
+
+@keyframes btnFlash {
+    0%   { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+    100% { box-shadow: 0 0 0 12px rgba(139, 92, 246, 0); }
+}

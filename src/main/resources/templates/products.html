@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products — InventoryMS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/products.css}" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink-950': '#0a0a0f',
+                        'ink-900': '#0d0d14',
+                        'ink-800': '#16161f',
+                        'accent': '#8b5cf6',
+                        'accent-light': '#a78bfa',
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="text-gray-200 antialiased">
+
+    <div class="dash-shell">
+
+        <!-- ============ SIDEBAR ============ -->
+        <aside id="sidebar" class="dash-sidebar">
+
+            <div class="px-5 py-5 border-b border-white/5">
+                <a href="/" class="flex items-center gap-2 text-white font-semibold text-lg">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center">
+                        <i data-lucide="package-2" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span>Inventory<span class="text-accent-light">MS</span></span>
+                </a>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto pb-4">
+                <p class="side-section-title">Overview</p>
+                <a href="/dashboard" class="side-link">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                    Dashboard
+                </a>
+                <a href="/analytics" class="side-link">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Analytics
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="receipt" class="w-4 h-4"></i>
+                    Reports
+                </a>
+
+                <p class="side-section-title">Manage</p>
+                <a href="/products" class="side-link active">
+                    <i data-lucide="package" class="w-4 h-4"></i>
+                    Products
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    Categories
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    Suppliers
+                    <span class="side-badge">Soon</span>
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    Orders
+                    <span class="side-badge">Soon</span>
+                </a>
+
+                <p class="side-section-title">Account</p>
+<a href="/profile" class="side-link">
+    <i data-lucide="user" class="w-4 h-4"></i>
+    Profile
+</a>
+                <a href="#" class="side-link">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    Settings
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i>
+                    Help & Support
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-white/5 space-y-3">
+                
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 rounded-lg py-2.5 transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- ============ MAIN ============ -->
+        <div class="dash-main">
+
+            <header class="topbar">
+                <div class="flex items-center justify-between gap-4 px-5 lg:px-8 py-4">
+                    <button id="sidebar-toggle"
+                            class="lg:hidden w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition">
+                        <i data-lucide="menu" class="w-4 h-4"></i>
+                    </button>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="breadcrumb">
+                            <a href="/dashboard" class="hover:text-gray-300 transition">Dashboard</a>
+                            <span class="sep">/</span>
+                            <span class="current">Products</span>
+                        </div>
+                        <h1 class="text-lg font-semibold text-white truncate mt-0.5">Product Catalog</h1>
+                    </div>
+
+                    <button data-open-panel="create"
+                            class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white text-sm font-medium px-4 py-2 rounded-lg transition btn-glow">
+                        <i data-lucide="plus" class="w-4 h-4 relative z-10"></i>
+                        <span>New Product</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 p-5 lg:p-8 space-y-6">
+
+                <div th:if="${successMsg}"
+                     id="toast"
+                     class="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/25 text-green-300 transition-all duration-300">
+                    <i data-lucide="check-circle-2" class="w-5 h-5 shrink-0"></i>
+                    <span class="text-sm" th:text="${successMsg}">Saved successfully.</span>
+                </div>
+
+                <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-accent/15 border border-accent/25">
+                            <i data-lucide="package" class="w-5 h-5 text-accent-light"></i>
+                        </div>
+                        <div class="stat-value" th:text="${totalCount}">0</div>
+                        <div class="stat-label">Total Products</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon bg-amber-500/15 border border-amber-500/25">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div class="stat-value" th:text="${lowStockCount}">0</div>
+                        <div class="stat-label">Low Stock</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green-500/15 border border-green-500/25">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div class="stat-value" th:text="${totalCount - lowStockCount}">0</div>
+                        <div class="stat-label">Healthy Stock</div>
+                    </div>
+                </section>
+
+                <section class="rounded-2xl border border-white/5 bg-white/[0.015] overflow-hidden">
+
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 border-b border-white/5">
+                        <div>
+                            <h2 class="text-base font-semibold text-white">All Products</h2>
+                            <p class="text-xs text-gray-500 mt-0.5"
+                               th:text="${totalCount + ' item(s)'}">0 item(s)</p>
+                        </div>
+
+                        <form method="get" th:action="@{/products}" class="relative w-full sm:w-72">
+                            <i data-lucide="search"
+                               class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+                            <input id="search-input"
+                                   type="text"
+                                   name="q"
+                                   th:value="${query}"
+                                   placeholder="Search by name or category..."
+                                   class="dash-input pl-9 w-full" />
+                        </form>
+                    </div>
+
+                    <div th:if="${products.isEmpty() and (query == null or query.isEmpty())}"
+                         class="empty-state py-16">
+                        <div class="empty-state-icon">
+                            <i data-lucide="package-open" class="w-8 h-8"></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-300 mb-1">No products yet</p>
+                        <p class="text-xs text-gray-500 mb-5">Add your first product to get started.</p>
+                        <button data-open-panel="create"
+                                class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            Add Product
+                        </button>
+                    </div>
+
+                    <div th:if="${products.isEmpty() and query != null and !query.isEmpty()}"
+                         class="empty-state py-16">
+                        <div class="empty-state-icon">
+                            <i data-lucide="search-x" class="w-8 h-8"></i>
+                        </div>
+                        <p class="text-sm text-gray-400">
+                            No products match "<span th:text="${query}">query</span>"
+                        </p>
+                    </div>
+
+                    <div th:unless="${products.isEmpty()}" class="overflow-x-auto">
+                        <table id="products-table" class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="p : ${products}" data-row>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent/20 to-pink-500/20 border border-white/5 flex items-center justify-center shrink-0">
+                                                <i data-lucide="package" class="w-4 h-4 text-accent-light"></i>
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-medium text-white truncate" th:text="${p.name}">Product</p>
+                                                <p class="text-xs text-gray-500">ID #<span th:text="${p.id}">1</span></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-violet" th:text="${p.category}">Category</span>
+                                    </td>
+                                    <td class="font-medium text-white">
+                                        ₱<span th:text="${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                                    </td>
+                                    <td class="text-gray-200" th:text="${p.quantity}">0</td>
+                                    <td>
+                                        <span th:if="${p.quantity == 0}" class="badge badge-rose">
+                                            <i data-lucide="x-circle" class="w-3 h-3"></i>
+                                            Out of stock
+                                        </span>
+                                        <span th:if="${p.quantity > 0 and p.quantity < 10}" class="badge badge-amber">
+                                            <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                                            Low stock
+                                        </span>
+                                        <span th:if="${p.quantity >= 10}" class="badge badge-green">
+                                            <i data-lucide="check-circle-2" class="w-3 h-3"></i>
+                                            In stock
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center justify-end gap-1">
+                                            <button type="button"
+                                                    class="action-btn action-btn-edit"
+                                                    title="Edit product"
+                                                    data-open-panel="edit"
+                                                    th:attr="data-product-id=${p.id},
+                                                             data-product-name=${p.name},
+                                                             data-product-category=${p.category},
+                                                             data-product-price=${p.price},
+                                                             data-product-quantity=${p.quantity}">
+                                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="action-btn action-btn-delete"
+                                                    title="Delete product"
+                                                    data-delete-product
+                                                    th:attr="data-product-id=${p.id},
+                                                             data-product-name=${p.name}">
+                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="no-results" class="hidden empty-state py-10">
+                            <div class="empty-state-icon">
+                                <i data-lucide="search-x" class="w-7 h-7"></i>
+                            </div>
+                            <p class="text-sm text-gray-400">No matching products.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="pt-2 pb-4 text-center text-xs text-gray-600">
+                    &copy; 2026 InventoryMS. All rights reserved.
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <div id="slide-backdrop" class="slide-backdrop"></div>
+
+    <!-- CREATE PANEL -->
+    <aside id="panel-create" class="slide-panel">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-accent/15 border border-accent/25 flex items-center justify-center">
+                    <i data-lucide="package-plus" class="w-5 h-5 text-accent-light"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold text-white">New Product</h3>
+                    <p class="text-xs text-gray-500">Add a product to your catalog</p>
+                </div>
+            </div>
+            <button data-close-panel
+                    class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6">
+            <form class="panel-animate space-y-5"
+                  th:action="@{/products/save}"
+                  th:object="${newProduct}"
+                  method="post">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Product Name</label>
+                    <input type="text" th:field="*{name}" placeholder="e.g. Wireless Mouse" required class="dash-input" />
+                    <p class="text-xs text-red-400 mt-1.5" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Category</label>
+                    <input type="text" th:field="*{category}" placeholder="e.g. Electronics" required class="dash-input" />
+                    <p class="text-xs text-red-400 mt-1.5" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Error</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Price (₱)</label>
+                        <input type="number" step="0.01" min="0" th:field="*{price}" placeholder="0.00" required class="dash-input" />
+                        <p class="text-xs text-red-400 mt-1.5" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Quantity</label>
+                        <input type="number" min="0" th:field="*{quantity}" placeholder="0" required class="dash-input" />
+                        <p class="text-xs text-red-400 mt-1.5" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Error</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/5">
+                    <button type="button" data-close-panel class="btn-ghost">Cancel</button>
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white text-sm font-medium px-5 py-2.5 rounded-lg transition btn-glow">
+                        <i data-lucide="check" class="w-4 h-4 relative z-10"></i>
+                        <span>Save Product</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+    <!-- EDIT PANEL — plain form, filled by JS -->
+    <aside id="panel-edit" class="slide-panel">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-500/25 flex items-center justify-center">
+                    <i data-lucide="pencil" class="w-5 h-5 text-cyan-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold text-white">Edit Product</h3>
+                    <p class="text-xs text-gray-500">
+                        Updating product <span id="edit-id-label" class="text-gray-400">#—</span>
+                    </p>
+                </div>
+            </div>
+            <button data-close-panel
+                    class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6">
+            <form id="edit-form" class="panel-animate space-y-5" method="post" th:action="@{/products/update/0}">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Product Name</label>
+                    <input type="text" name="name" required class="dash-input" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Category</label>
+                    <input type="text" name="category" required class="dash-input" />
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Price (₱)</label>
+                        <input type="number" step="0.01" min="0" name="price" required class="dash-input" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">Quantity</label>
+                        <input type="number" min="0" name="quantity" required class="dash-input" />
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/5">
+                    <button type="button" data-close-panel class="btn-ghost">Cancel</button>
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white text-sm font-medium px-5 py-2.5 rounded-lg transition btn-glow">
+                        <i data-lucide="save" class="w-4 h-4 relative z-10"></i>
+                        <span>Update Product</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+    <!-- DELETE MODAL -->
+    <div id="delete-modal-backdrop" class="modal-backdrop"></div>
+
+    <div id="delete-modal" class="modal-shell modal-danger" role="dialog" aria-modal="true">
+        <div class="modal-header">
+            <div class="modal-icon modal-icon-danger">
+                <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1">
+                <h3 class="modal-title">Delete product?</h3>
+                <p class="modal-message">
+                    You're about to permanently delete
+                    <strong id="delete-product-name">this product</strong>
+                    <span id="delete-product-id" class="text-gray-500"></span>.
+                </p>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="modal-warning">
+                <i data-lucide="alert-triangle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+                <span>This action cannot be undone.</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-close-delete class="btn-ghost">Cancel</button>
+            <form id="delete-form" method="post" th:action="@{/products/delete/0}">
+                <button type="submit" class="btn-danger">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    <span>Yes, delete it</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/products.js}"></script>
+</body>
+</html>

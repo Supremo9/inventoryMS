@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics — InventoryMS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink-950': '#0a0a0f',
+                        'ink-900': '#0d0d14',
+                        'ink-800': '#16161f',
+                        'accent': '#8b5cf6',
+                        'accent-light': '#a78bfa',
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="text-gray-200 antialiased">
+
+    <div class="dash-shell">
+
+        <!-- =========================================================
+             SIDEBAR
+             ========================================================= -->
+        <aside id="sidebar" class="dash-sidebar">
+
+            <!-- Brand -->
+            <div class="px-5 py-5 border-b border-white/5">
+                <a href="/" class="flex items-center gap-2 text-white font-semibold text-lg">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center">
+                        <i data-lucide="package-2" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span>Inventory<span class="text-accent-light">MS</span></span>
+                </a>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex-1 overflow-y-auto pb-4">
+                <p class="side-section-title">Overview</p>
+                <a href="/dashboard" class="side-link active">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                    Dashboard
+                </a>
+                <a href="/analytics" class="side-link">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Analytics
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="receipt" class="w-4 h-4"></i>
+                    Reports
+                </a>
+
+                <p class="side-section-title">Manage</p>
+                <a href="/products" class="side-link">
+                    <i data-lucide="package" class="w-4 h-4"></i>
+                    Products
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    Categories
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    Suppliers
+                    <span class="side-badge">Soon</span>
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    Orders
+                    <span class="side-badge">Soon</span>
+                </a>
+
+                <p class="side-section-title">Account</p>
+<a href="/profile" class="side-link">
+    <i data-lucide="user" class="w-4 h-4"></i>
+    Profile
+</a>
+                <a href="#" class="side-link">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    Settings
+                </a>
+                <a href="#" class="side-link">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i>
+                    Help & Support
+                </a>
+            </nav>
+
+            <!-- User chip + logout -->
+            <div class="p-4 border-t border-white/5 space-y-3">
+                
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 text-sm text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 rounded-lg py-2.5 transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- =========================================================
+             MAIN
+             ========================================================= -->
+        <div class="dash-main">
+
+            <!-- ========== TOP BAR ========== -->
+            <header class="topbar">
+                <div class="flex items-center justify-between gap-4 px-5 lg:px-8 py-4">
+
+                    <button id="sidebar-toggle"
+                            class="lg:hidden w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-gray-300 hover:text-white transition">
+                        <i data-lucide="menu" class="w-4 h-4"></i>
+                    </button>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="breadcrumb">
+                            <span>Home</span>
+                            <span class="sep">/</span>
+                            <span class="current">Dashboard</span>
+                        </div>
+                        <h1 class="text-lg font-semibold text-white truncate mt-0.5">Analytics Overview</h1>
+                    </div>
+
+                    <button data-open-panel
+                            class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white text-sm font-medium px-4 py-2 rounded-lg transition btn-glow">
+                        <i data-lucide="plus" class="w-4 h-4 relative z-10"></i>
+                        <span>Add Product</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ========== CONTENT ========== -->
+            <main class="flex-1 p-5 lg:p-8 space-y-6">
+
+                <!-- ========== STAT CARDS ========== -->
+                <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+
+                    <div class="stat-card">
+                        <div class="flex items-start justify-between">
+                            <div class="stat-icon bg-accent/15 border border-accent/25">
+                                <i data-lucide="package" class="w-5 h-5 text-accent-light"></i>
+                            </div>
+                            <span class="stat-delta text-green-400 bg-green-500/10">
+                                <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                                Live
+                            </span>
+                        </div>
+                        <div class="stat-value" th:text="${totalProducts}">0</div>
+                        <div class="stat-label">Total Products</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="flex items-start justify-between">
+                            <div class="stat-icon bg-green-500/15 border border-green-500/25">
+                                <i data-lucide="dollar-sign" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <span class="stat-delta text-green-400 bg-green-500/10">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i>
+                                Value
+                            </span>
+                        </div>
+                        <div class="stat-value">
+                            ₱<span th:text="${#numbers.formatDecimal(totalValue, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                        </div>
+                        <div class="stat-label">Inventory Value</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="flex items-start justify-between">
+                            <div class="stat-icon bg-amber-500/15 border border-amber-500/25">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>
+                            </div>
+                            <span class="stat-delta text-amber-400 bg-amber-500/10">
+                                <i data-lucide="alert-circle" class="w-3 h-3"></i>
+                                Watch
+                            </span>
+                        </div>
+                        <div class="stat-value" th:text="${lowStockCount}">0</div>
+                        <div class="stat-label">Low Stock (&lt;10)</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="flex items-start justify-between">
+                            <div class="stat-icon bg-pink-500/15 border border-pink-500/25">
+                                <i data-lucide="layers" class="w-5 h-5 text-pink-400"></i>
+                            </div>
+                            <span class="stat-delta text-pink-400 bg-pink-500/10">
+                                <i data-lucide="hash" class="w-3 h-3"></i>
+                                Unique
+                            </span>
+                        </div>
+                        <div class="stat-value" th:text="${categoryCount}">0</div>
+                        <div class="stat-label">Categories</div>
+                    </div>
+                </section>
+
+                <!-- ========== CHARTS ROW ========== -->
+                <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+                    <!-- Line chart (spans 2 columns) -->
+                    <div class="chart-card xl:col-span-2">
+                        <div class="chart-header">
+                            <div>
+                                <h2 class="chart-title">Stock Value Trend</h2>
+                                <p class="chart-subtitle">
+                                    Value of each product (price × quantity) — top items
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="badge badge-violet">
+                                    <i data-lucide="line-chart" class="w-3 h-3"></i>
+                                    Line
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="chart-canvas-wrap tall">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Doughnut chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div>
+                                <h2 class="chart-title">Category Mix</h2>
+                                <p class="chart-subtitle">Distribution by product count</p>
+                            </div>
+                            <span class="badge badge-violet">
+                                <i data-lucide="pie-chart" class="w-3 h-3"></i>
+                                Pie
+                            </span>
+                        </div>
+
+                        <div class="chart-canvas-wrap">
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+
+                        <!-- Custom legend -->
+                        <div class="legend-list" th:if="${!categoryStats.isEmpty()}">
+                            <div class="legend-item" th:each="c, it : ${categoryStats}">
+                                <div class="flex items-center">
+                                    <span class="legend-dot" th:style="'background:' + ${ {'#a78bfa','#f472b6','#38bdf8','#facc15','#34d399','#fb923c','#f87171','#818cf8'}[it.index % 8] }"></span>
+                                    <span th:text="${c.category}">Category</span>
+                                </div>
+                                <span class="text-gray-500" th:text="${c.count}">0</span>
+                            </div>
+                        </div>
+
+                        <div th:if="${categoryStats.isEmpty()}"
+                             class="text-center text-xs text-gray-500 py-4">
+                            No categories yet. Add a product to see the breakdown.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========== BOTTOM ROW ========== -->
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Top products by quantity -->
+                    <div class="chart-card lg:col-span-2">
+                        <div class="chart-header">
+                            <div>
+                                <h2 class="chart-title">Top Products by Quantity</h2>
+                                <p class="chart-subtitle">Your most-stocked items</p>
+                            </div>
+                        </div>
+
+                        <div th:if="${topProducts.isEmpty()}" class="text-center py-10">
+                            <div class="empty-state-icon mx-auto">
+                                <i data-lucide="package-open" class="w-7 h-7"></i>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-4">No products yet</p>
+                            <button data-open-panel
+                                    class="inline-flex items-center gap-2 mt-4 bg-accent hover:bg-accent-light text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                Add your first product
+                            </button>
+                        </div>
+
+                        <div th:unless="${topProducts.isEmpty()}" class="space-y-3">
+                            <div th:each="p, it : ${topProducts}"
+                                 class="flex items-center gap-4 p-3 rounded-xl border border-white/5 bg-white/[0.015] hover:border-accent/25 transition">
+
+                                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-accent/20 to-pink-500/20 border border-white/5 flex items-center justify-center shrink-0">
+                                    <i data-lucide="package" class="w-4 h-4 text-accent-light"></i>
+                                </div>
+
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-3 mb-1">
+                                        <p class="text-sm font-medium text-white truncate" th:text="${p.name}">Product</p>
+                                        <p class="text-sm text-white shrink-0">
+                                            ₱<span th:text="${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                                        </p>
+                                    </div>
+
+                                    <!-- Progress bar -->
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                                            <div class="h-full rounded-full bg-gradient-to-r from-accent to-pink-500"
+                                                 th:style="'width:' + ${p.quantity > 0 ? (p.quantity * 100 / topProducts[0].quantity) : 0} + '%'">
+                                            </div>
+                                        </div>
+                                        <span class="text-xs text-gray-400 shrink-0">
+                                            <span th:text="${p.quantity}">0</span> units
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Low stock alert list -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div>
+                                <h2 class="chart-title">Needs Attention</h2>
+                                <p class="chart-subtitle">Products with low stock</p>
+                            </div>
+                        </div>
+
+                        <div th:if="${lowStockCount == 0}" class="text-center py-8">
+                            <div class="w-12 h-12 mx-auto rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                            <p class="text-sm text-gray-300 mt-3">All good!</p>
+                            <p class="text-xs text-gray-500 mt-1">No low-stock items.</p>
+                        </div>
+
+                        <div th:unless="${lowStockCount == 0}" class="space-y-2">
+                            <div th:each="p : ${topProducts}"
+                                 th:if="${p.quantity < 10}"
+                                 class="activity-item">
+                                <div class="activity-icon bg-amber-500/15 border border-amber-500/25">
+                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-400"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm text-white truncate" th:text="${p.name}">Product</p>
+                                    <p class="text-xs text-amber-400 mt-0.5">
+                                        Only <span th:text="${p.quantity}">0</span> left
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========== FOOTER ========== -->
+                <footer class="pt-2 pb-4 text-center text-xs text-gray-600">
+                    &copy; 2026 InventoryMS. All rights reserved.
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         SLIDE PANEL — ADD PRODUCT
+         ========================================================= -->
+    <div id="add-panel-backdrop" class="slide-backdrop"></div>
+
+    <aside id="add-panel" class="slide-panel">
+
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-accent/15 border border-accent/25 flex items-center justify-center">
+                    <i data-lucide="package-plus" class="w-5 h-5 text-accent-light"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-semibold text-white">Add New Product</h3>
+                    <p class="text-xs text-gray-500">Fill in the product details below</p>
+                </div>
+            </div>
+            <button data-close-panel
+                    class="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-gray-400 hover:text-white transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6">
+            <form th:action="@{/products/save}"
+                  th:object="${product}"
+                  method="post"
+                  class="space-y-5">
+
+                <div data-has-error="${#fields.hasErrors('name')}">
+                    <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                        Product Name
+                    </label>
+                    <input type="text"
+                           th:field="*{name}"
+                           placeholder="e.g. Wireless Mouse"
+                           required
+                           class="dash-input" />
+                    <p class="text-xs text-red-400 mt-1.5"
+                       th:if="${#fields.hasErrors('name')}"
+                       th:errors="*{name}">Error</p>
+                </div>
+
+                <div data-has-error="${#fields.hasErrors('category')}">
+                    <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                        Category
+                    </label>
+                    <input type="text"
+                           th:field="*{category}"
+                           placeholder="e.g. Electronics"
+                           required
+                           class="dash-input" />
+                    <p class="text-xs text-red-400 mt-1.5"
+                       th:if="${#fields.hasErrors('category')}"
+                       th:errors="*{category}">Error</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div data-has-error="${#fields.hasErrors('price')}">
+                        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                            Price (₱)
+                        </label>
+                        <input type="number"
+                               step="0.01"
+                               min="0"
+                               th:field="*{price}"
+                               placeholder="0.00"
+                               required
+                               class="dash-input" />
+                        <p class="text-xs text-red-400 mt-1.5"
+                           th:if="${#fields.hasErrors('price')}"
+                           th:errors="*{price}">Error</p>
+                    </div>
+
+                    <div data-has-error="${#fields.hasErrors('quantity')}">
+                        <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">
+                            Quantity
+                        </label>
+                        <input type="number"
+                               min="0"
+                               th:field="*{quantity}"
+                               placeholder="0"
+                               required
+                               class="dash-input" />
+                        <p class="text-xs text-red-400 mt-1.5"
+                           th:if="${#fields.hasErrors('quantity')}"
+                           th:errors="*{quantity}">Error</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-2 p-3 rounded-lg bg-accent/5 border border-accent/15">
+                    <i data-lucide="info" class="w-4 h-4 text-accent-light mt-0.5 shrink-0"></i>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Products under 10 units are flagged as
+                        <span class="text-amber-400 font-medium">low stock</span> and
+                        appear in the "Needs Attention" panel.
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/5">
+                    <button type="button"
+                            data-close-panel
+                            class="px-4 py-2.5 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 bg-accent hover:bg-accent-light text-white text-sm font-medium px-5 py-2.5 rounded-lg transition btn-glow">
+                        <i data-lucide="check" class="w-4 h-4 relative z-10"></i>
+                        <span>Save Product</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+    <!-- =========================================================
+         CHART DATA (rendered from Thymeleaf into JS-safe JSON)
+         ========================================================= -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Line chart: top 8 products' total value (price × quantity)
+        window.__lineChartData = {
+            labels: /*[[${topProducts.![name]}]]*/ [],
+            values: /*[[${topProducts.![price * quantity]}]]*/ []
+        };
+
+        // Doughnut chart: categories + counts
+        window.__doughnutChartData = {
+            labels: /*[[${categoryStats.![category]}]]*/ [],
+            values: /*[[${categoryStats.![count]}]]*/ []
+        };
+        /*]]>*/
+    </script>
+
+    <!-- ============ Scripts ============ -->
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/dashboard.js}"></script>
+
+</body>
+</html>

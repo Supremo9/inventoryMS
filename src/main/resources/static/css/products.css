@@ -1,0 +1,484 @@
+/* ==========================================================
+   Products Page Styles
+   Only things specific to /products live here.
+   Shared styles (sidebar, shell, badges, buttons, panels,
+   modals) remain in styles.css.
+   ========================================================== */
+
+/* ---------- Stat cards row (same as dashboard, kept local) ---------- */
+.stat-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.15rem 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.35);
+    box-shadow: 0 20px 40px -20px rgba(139, 92, 246, 0.4);
+}
+
+.stat-card:hover::after { opacity: 1; }
+
+.stat-icon {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    margin-top: 0.85rem;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
+}
+
+/* ---------- Data table ---------- */
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.dash-table thead th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.dash-table tbody td {
+    padding: 0.9rem 1rem;
+    color: #d1d5db;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+}
+
+.dash-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.dash-table tbody tr:hover {
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.dash-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ---------- Status badges ---------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.badge-violet {
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.badge-green {
+    background: rgba(34, 197, 94, 0.12);
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.badge-amber {
+    background: rgba(245, 158, 11, 0.12);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-rose {
+    background: rgba(244, 63, 94, 0.12);
+    color: #fda4af;
+    border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
+/* ---------- Action buttons ---------- */
+.action-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+}
+
+.action-btn-edit { color: #a78bfa; }
+.action-btn-edit:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.action-btn-delete { color: #fda4af; }
+.action-btn-delete:hover {
+    background: rgba(244, 63, 94, 0.15);
+    border-color: rgba(244, 63, 94, 0.3);
+}
+
+/* ---------- Panel header stagger ---------- */
+@keyframes panelFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.panel-animate > * {
+    animation: panelFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.panel-animate > *:nth-child(1) { animation-delay: 0.05s; }
+.panel-animate > *:nth-child(2) { animation-delay: 0.10s; }
+.panel-animate > *:nth-child(3) { animation-delay: 0.15s; }
+.panel-animate > *:nth-child(4) { animation-delay: 0.20s; }
+.panel-animate > *:nth-child(5) { animation-delay: 0.25s; }
+.panel-animate > *:nth-child(6) { animation-delay: 0.30s; }
+
+/* ---------- Row entrance animation ---------- */
+@keyframes rowIn {
+    0%   { opacity: 0; transform: translateY(-6px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.row-entering {
+    animation: rowIn 0.4s ease both;
+}
+
+/* ---------- Row exit animation (delete) ---------- */
+@keyframes rowOut {
+    0%   { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-30px); }
+}
+
+.row-removing {
+    animation: rowOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: none;
+}
+
+/* ---------- Pencil click flash ---------- */
+@keyframes btnFlash {
+    0%   { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+    100% { box-shadow: 0 0 0 12px rgba(139, 92, 246, 0); }
+}
+
+.action-btn-flash {
+    animation: btnFlash 0.5s ease;
+}
+
+/* ---------- Delete modal (only used on this page) ---------- */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-shell {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.92);
+    width: calc(100% - 2rem);
+    max-width: 420px;
+    background: #0d0d14;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.1rem;
+    z-index: 61;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease,
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease;
+    overflow: hidden;
+}
+
+.modal-shell.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 40px 80px -30px rgba(244, 63, 94, 0.35),
+                0 0 0 1px rgba(244, 63, 94, 0.15);
+}
+
+.modal-shell.modal-danger::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #f43f5e, #ec4899);
+}
+
+.modal-header {
+    padding: 1.5rem 1.5rem 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.modal-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.modal-icon-danger {
+    background: rgba(244, 63, 94, 0.12);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    color: #fda4af;
+    animation: pulseRingRose 2s ease-out infinite;
+}
+
+@keyframes pulseRingRose {
+    0%   { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+    70%  { box-shadow: 0 0 0 14px rgba(244, 63, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+.modal-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.35rem;
+}
+
+.modal-message {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    line-height: 1.55;
+}
+
+.modal-message strong {
+    color: #e5e7eb;
+    font-weight: 500;
+}
+
+.modal-body { padding: 0.5rem 1.5rem 1.5rem; }
+
+.modal-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 0.65rem;
+    background: rgba(244, 63, 94, 0.06);
+    border: 1px solid rgba(244, 63, 94, 0.15);
+    font-size: 0.78rem;
+    color: #fca5a5;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- Modal / panel buttons ---------- */
+.btn-ghost {
+    padding: 0.65rem 1.15rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #9ca3af;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-danger {
+    padding: 0.65rem 1.15rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #e11d48, #f43f5e);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all 0.25s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -12px rgba(244, 63, 94, 0.7);
+}
+
+/* ---------- Slide panels (create + edit) ---------- */
+.slide-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 480px;
+    background: #0d0d14;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 50;
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.slide-panel.open {
+    transform: translateX(0);
+    box-shadow: -40px 0 80px -30px rgba(139, 92, 246, 0.25);
+}
+
+.slide-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 49;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.slide-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ---------- Inputs (local, so this page doesn't depend on styles.css) ---------- */
+.dash-input {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.55rem;
+    color: #e5e7eb;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.dash-input::placeholder { color: #6b7280; }
+
+.dash-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 10, 15, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.breadcrumb {
+    font-size: 0.7rem;
+    color: #71717a;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.breadcrumb .sep { color: #3f3f46; }
+.breadcrumb .current { color: #d4d4d8; }
+
+/* ---------- Empty states ---------- */
+.empty-state {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-state-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    border-radius: 1rem;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a78bfa;
+}
+
+/* ---------- Btn-glow (nice-to-have, if missing from styles.css) ---------- */
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s ease;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.7);
+    transform: translateY(-2px);
+}

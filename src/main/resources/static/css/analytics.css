@@ -1,0 +1,212 @@
+/* ==========================================================
+   Analytics Page Styles
+   Only things specific to /analytics live here.
+   Sidebar, shell, buttons, badges → styles.css
+   ========================================================== */
+
+/* ---------- Stats row ---------- */
+.stat-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.15rem 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(139, 92, 246, 0.35);
+    box-shadow: 0 20px 40px -20px rgba(139, 92, 246, 0.4);
+}
+
+.stat-card:hover::after { opacity: 1; }
+
+.stat-icon {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    margin-top: 0.85rem;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
+}
+
+/* ---------- Chart card ---------- */
+.chart-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.4rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    animation: chartIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.chart-card:hover {
+    border-color: rgba(139, 92, 246, 0.25);
+}
+
+.chart-card:nth-child(1) { animation-delay: 0.05s; }
+.chart-card:nth-child(2) { animation-delay: 0.10s; }
+.chart-card:nth-child(3) { animation-delay: 0.15s; }
+.chart-card:nth-child(4) { animation-delay: 0.20s; }
+
+@keyframes chartIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.chart-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+    gap: 1rem;
+}
+
+.chart-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+}
+
+.chart-subtitle {
+    font-size: 0.75rem;
+    color: #71717a;
+    margin-top: 0.15rem;
+}
+
+.chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 280px;
+}
+
+.chart-canvas-wrap.tall { height: 340px; }
+
+/* ---------- Legend under doughnut ---------- */
+.legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    max-height: 160px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #d1d5db;
+}
+
+.legend-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+/* ---------- Chart tabs (line chart toggle) ---------- */
+.chart-tabs {
+    display: inline-flex;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 0.6rem;
+    padding: 3px;
+    gap: 2px;
+}
+
+.chart-tab {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    border-radius: 0.45rem;
+    color: #9ca3af;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.chart-tab:hover { color: white; }
+
+.chart-tab.active {
+    background: rgba(139, 92, 246, 0.2);
+    color: #e9d5ff;
+}
+
+/* ---------- Recent activity list ---------- */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ---------- Topbar / breadcrumb (safe fallback) ---------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 10, 15, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.breadcrumb {
+    font-size: 0.7rem;
+    color: #71717a;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.breadcrumb .sep { color: #3f3f46; }
+.breadcrumb .current { color: #d4d4d8; }
